@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class ConfigTerreno:
+class ConfigTerrain:
     name: str
     char: str
     resource_max: int
@@ -12,13 +12,13 @@ class ConfigTerreno:
 
 
 @dataclass
-class ConfigObjeto:
+class ConfigObject:
     name: str
     char: str
     resource_max: int
 
 
 @dataclass
-class ConfigMapa:
+class ConfigMap:
     name: str
-    grilla: list[list[str]]
+    grid: list[list[str]]
