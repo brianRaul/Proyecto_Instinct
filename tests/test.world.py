@@ -1,7 +1,3 @@
-"""
-Pruebas unitarias para la clase World.
-Ejecutar con: python tests/test_world.py
-"""
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -11,7 +7,7 @@ from world.creature import Creature
 from world.objects import WorldObject
 
 def run_tests():
-    print("🧪 Iniciando pruebas de la clase World...\n")
+    print("Iniciando pruebas de la clase World...\n")
 
     # Preparamos la receta base
     c_grass = ConfigTerrain(name="Grass", char=".", resource_max=100, regen=2)
@@ -23,7 +19,7 @@ def run_tests():
     assert world.height == 4
     assert len(world.grid) == 4          # 4 filas
     assert len(world.grid[0]) == 5       # 5 columnas
-    print("   ✅ Mapa 5x4 creado correctamente.\n")
+    print(" Mapa 5x4 creado correctamente.\n")
 
     # --- Test 2: Límites del mapa ---
     print("2. Probando límites del mapa...")
@@ -32,7 +28,7 @@ def run_tests():
     assert world.is_valid_position(5, 0) == False # Fuera de ancho
     assert world.is_valid_position(0, 4) == False # Fuera de alto
     assert world.get_cell(-1, 0) is None
-    print("   ✅ Los límites funcionan correctamente.\n")
+    print("Los límites funcionan correctamente.\n")
 
     # --- Test 3: Obtener casillas ---
     print("3. Probando obtener casillas...")
@@ -40,7 +36,7 @@ def run_tests():
     assert cell is not None
     assert cell.x == 2 and cell.y == 2
     assert cell.terrain.name == "Grass"
-    print("   ✅ Obtención de casillas correcta.\n")
+    print("Obtención de casillas correcta.\n")
 
     # --- Test 4: Regeneración de terrenos ---
     print("4. Probando regeneración global de terrenos...")
@@ -53,7 +49,7 @@ def run_tests():
     # Como regen es 2, debería haber subido de 50 a 52
     assert world.get_cell(0, 0).terrain.points == 52
     assert world.get_cell(1, 1).terrain.points == 52
-    print("   ✅ Regeneración de terrenos correcta.\n")
+    print("Regeneración de terrenos correcta.\n")
 
     # --- Test 5: Limpieza de muertos ---
     print("5. Probando eliminación de entidades muertas...")
@@ -78,9 +74,9 @@ def run_tests():
     # Ahora deben ser None
     assert world.get_cell(0, 0).creature is None
     assert world.get_cell(0, 0).world_object is None
-    print("   ✅ Eliminación de entidades muertas correcta.\n")
+    print("Eliminación de entidades muertas correcta.\n")
 
-    print("🎉 ¡TODAS LAS PRUEBAS DE WORLD PASARON CON ÉXITO! 🎉")
+    print("¡TODAS LAS PRUEBAS DE WORLD PASARON CON ÉXITO!")
 
 if __name__ == "__main__":
     run_tests()
