@@ -13,6 +13,10 @@ class Terrain(WorldElement):
     def is_alive(self) -> bool:
         # El terreno siempre se mantiene vivo
         return True
+    
+    def heal(self, amount: int) -> None:
+      
+        self.points = min(self.points + amount, self.config.resource_max)
 
     def regenerate(self) -> None:
         self.points = min(self.points + self.config.regen, self.config.resource_max)
