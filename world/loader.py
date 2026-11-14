@@ -16,7 +16,7 @@ class ErrorDeCarga(Exception):  #clase propia para errores
 #seccion 1, aqui se lee un archivo terreno, objeto o mapa y se valida
 
 def leer_terreno(ruta):
-    with open(ruta, 'r') as archivo:
+    with open(ruta, 'r', encoding='utf-8') as archivo:
         lineas = archivo.readlines()
 
     claves_obligatorias = ["terrain", "char", "resource_max", "regen"]
@@ -31,19 +31,26 @@ def leer_terreno(ruta):
             continue
 
         partes = linea.split()
-        if len(partes) != 2:
-            raise ErrorDeCarga(ruta, f"se esperaba 'clave valor', se encontró: '{linea}'",linea=numero)
 
-        clave, valor = partes[0], partes[1]
+        if len(partes) != 2:
+            raise ErrorDeCarga(ruta, f"se esperaba 'clave valor', se encontró: '{linea}'", linea=numero)
+
+        clave, valor = partes
 
         if clave not in claves_obligatorias:
-            raise ErrorDeCarga(ruta, f"la clave '{clave}' no está permitida",linea=numero)
+            raise ErrorDeCarga(ruta, f"la clave '{clave}' no está permitida", linea=numero)
+
+        if clave in datos:
+            raise ErrorDeCarga(ruta, f"la clave '{clave}' está repetida", linea=numero)
 
         if clave in claves_numericas:
             try:
                 valor = int(valor)
             except ValueError:
                 raise ErrorDeCarga(ruta, f"'{valor}' no es un número válido para '{clave}'", linea=numero)
+
+        if clave == "char" and len(valor) != 1:
+            raise ErrorDeCarga(ruta, "el char debe tener exactamente un carácter", linea=numero)
 
         datos[clave] = valor
 
@@ -54,7 +61,7 @@ def leer_terreno(ruta):
     return datos
 
 def leer_objeto(ruta):
-    with open(ruta, 'r') as archivo:
+    with open(ruta, 'r', encoding='utf-8') as archivo:
         lineas = archivo.readlines()
 
     claves_obligatorias = ["object", "char", "resource_max"]
@@ -69,19 +76,26 @@ def leer_objeto(ruta):
             continue
 
         partes = linea.split()
+
         if len(partes) != 2:
             raise ErrorDeCarga(ruta, f"se esperaba 'clave valor', se encontró: '{linea}'", linea=numero)
 
-        clave, valor = partes[0], partes[1]
+        clave, valor = partes
 
         if clave not in claves_obligatorias:
             raise ErrorDeCarga(ruta, f"la clave '{clave}' no está permitida", linea=numero)
+
+        if clave in datos:
+            raise ErrorDeCarga(ruta, f"la clave '{clave}' está repetida", linea=numero)
 
         if clave in claves_numericas:
             try:
                 valor = int(valor)
             except ValueError:
                 raise ErrorDeCarga(ruta, f"'{valor}' no es un número válido para '{clave}'", linea=numero)
+
+        if clave == "char" and len(valor) != 1:
+            raise ErrorDeCarga(ruta, "el char debe tener exactamente un carácter", linea=numero)
 
         datos[clave] = valor
 
@@ -92,29 +106,33 @@ def leer_objeto(ruta):
     return datos
 
 def leer_mapa(ruta, catalogo):
-    with open(ruta, 'r') as archivo:
+    with open(ruta, 'r', encoding='utf-8') as archivo:
         lineas = archivo.readlines()
 
     if not lineas:
-        raise ErrorDeCarga(ruta, f"el archivo está vacío")
+        raise ErrorDeCarga(ruta, "el archivo está vacío")
 
     nombre = lineas[0].strip()
+
+    if nombre == '':
+        raise ErrorDeCarga(ruta, "el mapa no tiene nombre", linea=1)
+
     lineas = lineas[1:]
 
     if not lineas:
-        raise ErrorDeCarga(ruta, f"el mapa no tiene ninguna fila de casillas")
+        raise ErrorDeCarga(ruta, "el mapa no tiene ninguna fila de casillas")
 
     largo_de_mapa = None
     grilla = []
 
     for numero, linea in enumerate(lineas, start=2):
-        linea = linea.rstrip('\n')
+        linea = linea.rstrip('\r\n')
 
         if linea == '':
-            raise ErrorDeCarga(ruta, f"no se permiten líneas vacías dentro del mapa", linea=numero)
+            raise ErrorDeCarga(ruta, "no se permiten líneas vacías dentro del mapa", linea=numero)
 
-        if largo_de_mapa != None and len(linea) != largo_de_mapa:
-            raise ErrorDeCarga(ruta, f"todas las filas deben tener la misma cantidad de caracteres", linea=numero)
+        if largo_de_mapa is not None and len(linea) != largo_de_mapa:
+            raise ErrorDeCarga(ruta, "todas las filas deben tener la misma cantidad de caracteres", linea=numero)
 
         largo_de_mapa = len(linea)
 
