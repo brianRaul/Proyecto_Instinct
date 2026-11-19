@@ -1,19 +1,4 @@
-class ErrorDeCompilacion(Exception):
-    """Error en un archivo .ins (léxico, sintáctico o semántico).
-
-    Guarda la línea como atributo para que la aplicación pueda
-    mostrarla o registrarla sin tener que analizar el texto del mensaje.
-    """
-
-    def __init__(self, mensaje, linea=None):
-        self.mensaje = mensaje
-        self.linea = linea
-
-        if linea is None:
-            super().__init__(mensaje)
-        else:
-            super().__init__(f"Línea {linea}: {mensaje}")
-
+from errores import ErrorDeCompilacion
 
 class Token:
     def __init__(self, tipo, valor, linea):
@@ -24,8 +9,6 @@ class Token:
     def __repr__(self):
         return f"Token({self.tipo}, {self.valor}, línea {self.linea})"
 
-
-# Las palabras reservadas son del lenguaje Instinct, así que se quedan en inglés
 PALABRAS_RESERVADAS = {
     "if",
     "goto",
@@ -177,8 +160,4 @@ class Lexer:
 
 
 def tokenizar(codigo):
-    lexer = Lexer(codigo)
-    return lexer.tokenizar()
-
-
-print(tokenizar("if goto < and <"))
+    return Lexer(codigo).tokenizar()
