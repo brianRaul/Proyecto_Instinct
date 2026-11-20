@@ -1,6 +1,6 @@
-from errores import ErrorDeCompilacion
+from errors.errores import ErrorDeCompilacion
 from nodos import (Numero, Cadena, Variable, Unaria, Binaria, Llamada,
-                   Asignacion, Accion, Goto, SiGoto, Programa)
+                   Asignacion, Accion, Goto, IfGoto, Programa)
 
 # GRAMÁTICA DEL LENGUAJE INSTINCT 
 #
@@ -339,7 +339,7 @@ class Parser:
         self.esperar_fin_linea()
 
         self.saltos.append((destino.valor, destino.linea))
-        return SiGoto(condicion, destino.valor, palabra.linea)
+        return IfGoto(condicion, destino.valor, palabra.linea)
 
     def parsear_asignacion(self):
         nombre = self.avanzar()          # el identificador

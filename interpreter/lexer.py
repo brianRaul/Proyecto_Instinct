@@ -1,4 +1,4 @@
-from errores import ErrorDeCompilacion
+from errors.errores import ErrorDeCompilacion
 
 class Token:
     def __init__(self, tipo, valor, linea):

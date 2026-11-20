@@ -1,7 +1,6 @@
-from errores import ErrorDeEjecucion
-from ejecucion import (es_numero, es_verdadero, nombre_tipo,
+from errors.errores import ErrorDeEjecucion
+from ejecución import (es_numero, es_verdadero, nombre_tipo,
                           ARITMETICA, ORDEN, IGUALDAD)
-
 
 # nodos de expresion
 class Numero:
@@ -137,9 +136,9 @@ class Goto:
 
     def __repr__(self):
         return f"goto {self.etiqueta}"
+    
 
-
-class SiGoto:
+class IfGoto:
     def __init__(self, condicion, etiqueta, linea):
         self.condicion = condicion
         self.etiqueta = etiqueta
